@@ -20,7 +20,8 @@ describe OysterCard do
   end
 
   it "It should allow the customer to deduct funds from the card" do
-    expect { subject.deduct 1}.to change{subject.balance }.by 1
+    subject.top_up(1)
+    expect { subject.deduct 1}.to change{subject.balance }.by -1
   end
 
 end
