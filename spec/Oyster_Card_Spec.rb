@@ -25,11 +25,11 @@ describe OysterCard do
   end
 
   it "is initially not in a journey" do
-    expect(subject).not_to be_in_journey
+    expect(subject.in_journey).to be false
   end
 
   it "can touch in" do
     subject.touch_in
-    expect(subject).to be_in_journey
+    expect(subject.in_journey).to be true
   end
   end
