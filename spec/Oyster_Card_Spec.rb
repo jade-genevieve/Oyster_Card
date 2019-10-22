@@ -2,6 +2,7 @@ require "oyster_card"
 
 describe OysterCard do
   subject { OysterCard.new }
+  let(:station) { double :station }
 
   it { is_expected.to respond_to(:top_up).with(1).argument }
 
@@ -49,6 +50,11 @@ describe OysterCard do
       subject.top_up(1)
       subject.touch_in
       expect { subject.touch_out }.to change { subject.balance }.by(-OysterCard::MINIMUM_CHARGE)
+    end
+
+    it "stores the entry station" do
+      subject.touch_in(station)
+      expect(subject.entry_station).to eq station
     end
   end
 end
