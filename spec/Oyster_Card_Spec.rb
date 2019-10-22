@@ -51,8 +51,9 @@ describe OysterCard do
     end
 
     it "deducts minimum charge" do
+      subject.top_up(1)
       subject.touch_in
-      expect { subject.touch_out }.to change { subject.balance }.by(OysterCard::MINIMUM_CHARGE)
+      expect { subject.touch_out }.to change { subject.balance }.by(-OysterCard::MINIMUM_CHARGE)
     end
   end
 end
