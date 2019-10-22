@@ -1,5 +1,4 @@
 class OysterCard
-
   MAXIMUM_BALANCE = 90
 
   attr_reader :balance, :in_journey
@@ -20,5 +19,9 @@ class OysterCard
 
   def touch_in
     @in_journey = true
+  end
+
+  def touch_out
+    @in_journey = false
   end
 end
