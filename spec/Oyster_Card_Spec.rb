@@ -1,7 +1,8 @@
 require "oyster_card"
 
 describe OysterCard do
-  let(:station) { double :station }
+  let(:entry_station) { double :station }
+  let(:exit_station) { double :station }
 
   before(:each) do
     subject.top_up(1)
@@ -29,14 +30,26 @@ describe OysterCard do
 
   describe "#touch_in" do
     it "can touch in" do
-      subject.touch_in(station)
+      subject.touch_in(entry_station)
       expect(subject.in_journey).to be true
+    end
+
+    it "deducts minimum charge" do
+      subject.top_up(1)
+      subject.touch_in(entry_station)
+      expect { subject.touch_out(exit_station) }.to change { subject.balance }.by(-OysterCard::MINIMUM_CHARGE)
+    end
+
+    it "stores the entry station" do
+      subject.touch_in(entry_station)
+      puts subject.entry_station
+      expect(subject.entry_station).to eq station
     end
 
     context "oystercard is below minimum balance" do
       it "will not touch in" do
-        subject.touch_out
-        expect { subject.touch_in(station) }.to raise_error "Insufficient balance to touch in"
+        subject.touch_out(exit_station)
+        expect { subject.touch_in(entry_station) }.to raise_error "Insufficient balance to touch in"
       end
     end
   end
@@ -44,20 +57,15 @@ describe OysterCard do
   describe "#touch_out" do
     it "can touch out" do
       subject.top_up(1)
-      subject.touch_in(station)
-      subject.touch_out
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
       expect(subject.in_journey).to be false
     end
 
-    it "deducts minimum charge" do
-      subject.top_up(1)
-      subject.touch_in(station)
-      expect { subject.touch_out }.to change { subject.balance }.by(-OysterCard::MINIMUM_CHARGE)
-    end
-
-    it "stores the entry station" do
-      subject.touch_in(station)
-      expect(subject.entry_station).to eq station
+    it "stores exit station" do
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.exit_station).to eq(exit_station)
     end
   end
 end
