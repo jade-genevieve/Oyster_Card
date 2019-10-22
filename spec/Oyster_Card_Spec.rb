@@ -19,11 +19,6 @@ describe OysterCard do
     expect { subject.top_up 1 }.to raise_error "Maximum balance exceeded"
   end
 
-  it "It should allow the customer to deduct funds from the card" do
-    subject.top_up(1)
-    expect { subject.deduct 1 }.to change { subject.balance }.by -1
-  end
-
   it "is initially not in a journey" do
     expect(subject.in_journey).to be false
   end
