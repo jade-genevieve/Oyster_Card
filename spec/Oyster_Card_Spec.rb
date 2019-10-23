@@ -46,7 +46,6 @@ describe OysterCard do
 
     it "stores the entry station" do
       subject.touch_in(entry_station)
-      puts subject.entry_station
       expect(subject.entry_station).to eq entry_station
     end
 
