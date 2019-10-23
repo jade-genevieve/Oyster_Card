@@ -3,6 +3,12 @@ require "oyster_card"
 describe OysterCard do
   let(:entry_station) { double :station }
   let(:exit_station) { double :station }
+  let(:journey) {
+    {
+      entry_station: entry_station,
+      exit_station: exit_station,
+    }
+  }
 
   before(:each) do
     subject.top_up(1)
@@ -12,6 +18,12 @@ describe OysterCard do
 
   it "has an empty list of journeys by default" do
     expect(subject.journeys).to be_empty
+  end
+
+  it "stores a journey" do
+    subject.touch_in(entry_station)
+    subject.touch_out(exit_station)
+    expect(subject.journeys).to include journey
   end
 
   it "It should allow the customer to add funds to the card" do
