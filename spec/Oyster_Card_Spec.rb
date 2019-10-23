@@ -41,13 +41,13 @@ describe OysterCard do
   end
 
   it "is initially not in a journey" do
-    expect(subject.in_journey).to be false
+    expect(subject).not_to be_in_journey
   end
 
   describe "#touch_in" do
     it "can touch in" do
       subject.touch_in(entry_station)
-      expect(subject.in_journey).to be true
+      expect(subject).to be_in_journey
     end
 
     it "deducts minimum charge" do
@@ -58,7 +58,7 @@ describe OysterCard do
 
     it "stores the entry station" do
       subject.touch_in(entry_station)
-      expect(subject.entry_station).to eq entry_station
+      expect(subject.station).to eq entry_station
     end
 
     context "oystercard is below minimum balance" do
@@ -74,13 +74,13 @@ describe OysterCard do
       subject.top_up(1)
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
-      expect(subject.in_journey).to be false
+      expect(subject).not_to be_in_journey
     end
 
     it "stores exit station" do
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
-      expect(subject.exit_station).to eq(exit_station)
+      expect(subject.journeys).to eq([{ :entry_station => entry_station, :exit_station => exit_station }])
     end
   end
 end
