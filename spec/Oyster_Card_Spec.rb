@@ -10,6 +10,10 @@ describe OysterCard do
 
   it { is_expected.to respond_to(:top_up).with(1).argument }
 
+  it "has an empty list of journeys by default" do
+    expect(subject.journeys).to be_empty
+  end
+
   it "It should allow the customer to add funds to the card" do
     expect { subject.top_up 1 }.to change { subject.balance }.by 1
   end
