@@ -1,7 +1,7 @@
 require "station"
 
 describe Station do
-  subject { described_class.new(name: "Old Street", zone: 1) }
+  subject { described_class.new("Old Street", 1) }
   it { is_expected.to be_an_instance_of Station }
 
   it "knows its name" do
