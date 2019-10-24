@@ -27,7 +27,7 @@ class OysterCard
     deduct(MINIMUM_CHARGE)
     @journey.finish(exit_station)
     @journeys << { entry_station: @journey.entry_station, exit_station: @journey.exit_station }
-    @journey = nil
+    @journey = Journey.new
   end
 
   def in_journey?

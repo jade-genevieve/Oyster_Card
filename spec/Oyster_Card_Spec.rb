@@ -44,43 +44,32 @@ describe OysterCard do
     expect(subject).not_to be_in_journey
   end
 
-  # describe "#touch_in" do
-  it "can touch in" do
-    subject.touch_in(entry_station)
-    expect().to be_in_journey
+  describe "#touch_in" do
+    it "can touch in" do
+      subject.touch_in(entry_station)
+      expect(subject).to be_in_journey
+    end
+
+    it "deducts minimum charge" do
+      subject.top_up(1)
+      subject.touch_in(entry_station)
+      expect { subject.touch_out(exit_station) }.to change { subject.balance }.by(-OysterCard::MINIMUM_CHARGE)
+    end
+
+    context "oystercard is below minimum balance" do
+      it "will not touch in" do
+        subject.touch_out(exit_station)
+        expect { subject.touch_in(entry_station) }.to raise_error "Insufficient balance to touch in"
+      end
+    end
   end
 
-  # it "deducts minimum charge" do
-  #   subject.top_up(1)
-  #   subject.touch_in(entry_station)
-  #   expect { subject.touch_out(exit_station) }.to change { subject.balance }.by(-OysterCard::MINIMUM_CHARGE)
-  # end
-
-  #   it "stores the entry station" do
-  #     subject.touch_in(entry_station)
-  #     expect(subject.station).to eq entry_station
-  #   end
-
-  #   context "oystercard is below minimum balance" do
-  #     it "will not touch in" do
-  #       subject.touch_out(exit_station)
-  #       expect { subject.touch_in(entry_station) }.to raise_error "Insufficient balance to touch in"
-  #     end
-  #   end
-  # end
-
-  # describe "#touch_out" do
-  #   it "can touch out" do
-  #     subject.top_up(1)
-  #     subject.touch_in(entry_station)
-  #     subject.touch_out(exit_station)
-  #     expect(subject).not_to be_in_journey
-  #   end
-
-  #   it "stores exit station" do
-  #     subject.touch_in(entry_station)
-  #     subject.touch_out(exit_station)
-  #     expect(subject.journeys).to eq([{ :entry_station => entry_station, :exit_station => exit_station }])
-  #   end
-  # end
+  describe "#touch_out" do
+    it "can touch out" do
+      subject.top_up(1)
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject).not_to be_in_journey
+    end
+  end
 end
