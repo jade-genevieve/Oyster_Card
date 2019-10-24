@@ -14,14 +14,15 @@ class Journey
 
   def finish(station)
     @exit_station = station
+    
   end
 
   def fare
-    return PENALTY_FARE if incomplete?
+    return PENALTY_FARE if !complete?
     STANDARD_FARE
   end
 
-  def incomplete?
-    entry_station.nil? || exit_station.nil?
+  def complete?
+    entry_station && exit_station
   end
 end
